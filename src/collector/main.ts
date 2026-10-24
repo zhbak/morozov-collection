@@ -16,6 +16,7 @@ import { buildTestbed } from './scenes/testbed';
 import { buildStreet } from './scenes/street';
 import { buildGallery } from './scenes/gallery';
 import { buildMansion } from './scenes/mansion';
+import { buildSplatStreet } from './scenes/splatStreet';
 import { Session } from './game/session';
 import { allHung } from './game/collection';
 import { BARGAIN, BUDGET, CHAPTER, INTRO, PAINTINGS } from './content/paintings';
@@ -33,6 +34,8 @@ const LEVELS: Partial<Record<LocationId, (ctx: LevelContext) => Promise<Level>>>
   street: buildStreet,
   gallery: buildGallery,
   mansion: buildMansion,
+  // Спайк B, только dev: ?loc=splat&world=<id>
+  ...(import.meta.env.DEV ? { splat: buildSplatStreet } : {}),
 };
 
 // Отладочные «ручки» для Playwright и агента: состояние и действия через тот же InputState
@@ -120,9 +123,17 @@ async function boot() {
   session.onChange(syncState);
   let closeScreen: (() => void) | null = null;
 
+  // ?res=2560x1440 — фиксированное разрешение рендера для замеров FPS (канвас растягивается по окну)
+  const fixed = params.get('res')?.split('x').map(Number);
   const resize = () => {
-    renderer.setSize(innerWidth, innerHeight, false);
-    camera.aspect = innerWidth / innerHeight;
+    if (fixed?.length === 2) {
+      renderer.setPixelRatio(1);
+      renderer.setSize(fixed[0], fixed[1], false);
+      camera.aspect = fixed[0] / fixed[1];
+    } else {
+      renderer.setSize(innerWidth, innerHeight, false);
+      camera.aspect = innerWidth / innerHeight;
+    }
     camera.updateProjectionMatrix();
   };
   addEventListener('resize', resize);
@@ -360,7 +371,10 @@ async function boot() {
     });
   }
 
-  game.start = play;
+  game.start = () => {
+    started = true;
+    play();
+  };
   const title = hud.showScreen(
     `<p class="c-eyebrow">Собрание Ивана Морозова</p>
      <h1>Коллекционер</h1>
@@ -369,7 +383,20 @@ async function boot() {
      <button class="c-btn" data-a="start">Начать</button>`,
     'c-title',
   );
-  title.querySelector('[data-a="start"]')!.addEventListener('click', play);
+  // Первый старт: затемнение с подписью места, потом — в кадр
+  let started = false;
+  const begin = async () => {
+    if (started) return play();
+    started = true;
+    hud.clearScreen();
+    kbm.requestLock();
+    game.screen = 'transition';
+    await hud.fade(true, game.location === 'street' ? INTRO.street : '', 600);
+    await new Promise((r) => setTimeout(r, 1600));
+    await hud.fade(false, '', 1100);
+    play();
+  };
+  title.querySelector('[data-a="start"]')!.addEventListener('click', () => void begin());
   kbm.enabled = false;
   game.screen = 'title';
   await hud.fade(false, '', 700);
@@ -432,7 +459,7 @@ async function boot() {
       frames = 0;
       acc = 0;
       if (DEBUG || params.has('fps'))
-        hud.setStats(`${game.fps} fps · ${game.backend} · ${quality.level}\n${innerWidth * renderer.getPixelRatio()}×${innerHeight * renderer.getPixelRatio()}`);
+        hud.setStats(`${game.fps} fps · ${game.backend} · ${quality.level}\n${renderer.domElement.width}×${renderer.domElement.height}`);
     }
   });
 }

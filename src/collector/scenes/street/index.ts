@@ -267,7 +267,7 @@ export async function buildStreet(ctx: LevelContext): Promise<Level> {
     exposure: 0.62,
     post: {
       bloom: { strength: 0.1, radius: 0.5, threshold: 1.4 },
-      godrays: { light: sun, color: 0xffc58a, density: 0.35, maxDensity: 0.35, attenuation: 3 },
+      // Без godrays: в открытой улице лучи копятся в небе, а при малой плотности невидимы и стоят ~60 шагов на пиксель
       vignette: 0.32,
       ao: { radius: 0.6 },
     },

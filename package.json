@@ -16,7 +16,8 @@
     "check:size": "node scripts/check-size.mjs",
     "assets:character": "node scripts/assets/meshy-character.mjs",
     "assets:polyhaven": "node scripts/assets/polyhaven.mjs",
-    "assets:paintings-v2": "node scripts/assets/commons-paintings.mjs"
+    "assets:paintings-v2": "node scripts/assets/commons-paintings.mjs",
+    "assets:world": "node scripts/assets/worldlabs.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

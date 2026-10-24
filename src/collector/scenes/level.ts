@@ -5,7 +5,7 @@ import type { Quality } from '../engine/quality';
 import type { Shot } from '../engine/cameraRig';
 import type { Session } from '../game/session';
 
-export type LocationId = 'testbed' | 'street' | 'gallery' | 'mansion';
+export type LocationId = 'testbed' | 'street' | 'gallery' | 'mansion' | 'splat';
 
 /** Точка, с которой можно взаимодействовать клавишей E */
 export interface Interactable {

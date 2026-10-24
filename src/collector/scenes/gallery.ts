@@ -191,6 +191,12 @@ export async function buildGallery(ctx: LevelContext): Promise<Level> {
       sold.visible = false;
       f.group.add(sold);
       framed.set(p.id, { group: f.group, sold, spot, info: p });
+      // Мягкий направленный свет на картину сверху-спереди: в рассеянном свете зала холст тускнел
+      const n = new THREE.Vector3(Math.sin(spot.rotY), 0, Math.cos(spot.rotY));
+      const lamp = new THREE.SpotLight(0xfff0dc, spot.easel ? 9 : 14, 7, THREE.MathUtils.degToRad(24), 0.85, 1.6);
+      lamp.position.copy(spot.pos).addScaledVector(n, 2.2).setY(H - 0.35);
+      lamp.target.position.copy(spot.pos);
+      scene.add(lamp, lamp.target);
       if (!spot.easel) return;
       const easel = await kit.model('easel').catch(() => null);
       if (easel) {

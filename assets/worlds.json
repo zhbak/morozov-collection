@@ -1,0 +1,14 @@
+[
+  {
+    "id": "street-draft",
+    "model": "marble-1.0-draft",
+    "seed": 1908,
+    "prompt": "A narrow Parisian street of art dealers around 1908 at golden hour. Five-story cream limestone Haussmann buildings on both sides with continuous wrought-iron balconies, carved stone window surrounds and grey slate mansard roofs with dormers. Ground floors are art gallery shop fronts with dark green and oxblood painted wooden facades, large display windows and gilded lettering. Cobblestone roadway, narrow sidewalks, cast-iron gas street lamps. Warm low sun from the end of the street, long shadows, soft haze. No cars, no modern objects, no people."
+  },
+  {
+    "id": "street-plus",
+    "model": "marble-1.1-plus",
+    "seed": 1908,
+    "prompt": "A narrow Parisian street of art dealers around 1908 at golden hour. Five-story cream limestone Haussmann buildings on both sides with continuous wrought-iron balconies, carved stone window surrounds and grey slate mansard roofs with dormers. Ground floors are art gallery shop fronts with dark green and oxblood painted wooden facades, large display windows and gilded lettering. Cobblestone roadway, narrow sidewalks, cast-iron gas street lamps. Warm low sun from the end of the street, long shadows, soft haze. No cars, no modern objects, no people."
+  }
+]
