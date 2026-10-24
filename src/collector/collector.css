@@ -1,0 +1,246 @@
+:root {
+  --ink: #f3e9d8;
+  --ink-dim: #c9bba3;
+  --paper: rgba(24, 19, 15, 0.86);
+  --line: rgba(222, 190, 132, 0.35);
+  --gold: #d9b26f;
+  --serif: 'Cormorant Garamond', 'PT Serif', Georgia, serif;
+  --text: 'PT Serif', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0d0b09;
+  color: var(--ink);
+  font: 17px/1.5 var(--text);
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+}
+
+#ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#ui button,
+#ui a,
+#ui .c-panel {
+  pointer-events: auto;
+}
+
+.c-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.c-layer:empty {
+  display: none;
+}
+
+.c-panel {
+  max-width: min(640px, calc(100vw - 32px));
+  padding: 36px 44px 32px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.c-panel h1,
+.c-panel h2 {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  margin: 0 0 14px;
+}
+
+.c-panel h1 {
+  font-size: 54px;
+}
+
+.c-panel h2 {
+  font-size: 36px;
+}
+
+.c-eyebrow {
+  margin: 0 0 10px;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.c-lead {
+  color: var(--ink-dim);
+  margin: 0 0 22px;
+}
+
+.c-keys {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  margin: 0 0 26px;
+  font-size: 15px;
+  color: var(--ink-dim);
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font: 600 13px/1.5 var(--text);
+  color: var(--ink);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.c-btn {
+  appearance: none;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: #1b140c;
+  font: 600 17px/1 var(--text);
+  padding: 13px 26px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.c-btn:hover {
+  background: #ecc985;
+}
+
+.c-btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.c-btn--ghost:hover {
+  background: rgba(217, 178, 111, 0.15);
+}
+
+.c-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.c-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.c-note {
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: var(--ink-dim);
+  opacity: 0.8;
+}
+
+.c-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 13vh;
+  transform: translateX(-50%);
+  padding: 9px 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.c-prompt kbd {
+  margin-right: 8px;
+}
+
+.c-toast {
+  position: absolute;
+  left: 50%;
+  top: 7vh;
+  transform: translate(-50%, -12px);
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 10px 20px;
+  background: var(--paper);
+  border-left: 2px solid var(--gold);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.c-toast--show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.c-stats {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font: 12px/1.4 ui-monospace, Menlo, monospace;
+  color: #bfe3b4;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px;
+  white-space: pre;
+}
+
+.c-crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: rgba(255, 245, 225, 0.8);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.c-fade {
+  position: absolute;
+  inset: 0;
+  background: #0b0907;
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+  display: grid;
+  place-items: center;
+}
+
+.c-fade--on {
+  opacity: 1;
+}
+
+.c-fade__caption {
+  font-family: var(--serif);
+  font-size: clamp(32px, 5vw, 64px);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1.2s 0.3s, transform 1.2s 0.3s;
+}
+
+.c-fade--caption .c-fade__caption {
+  opacity: 1;
+  transform: none;
+}

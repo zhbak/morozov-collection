@@ -16,6 +16,7 @@
     "check:size": "node scripts/check-size.mjs"
   },
   "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.21.0",
     "three": "^0.186.1"
   },
   "devDependencies": {
