@@ -193,6 +193,7 @@ async function boot() {
     kbm.reset();
     kbm.releaseLock();
     hud.setPrompt(null);
+    hud.clearToast();
     rig.setShot(shot);
     render();
     closeScreen = () => {
@@ -228,7 +229,7 @@ async function boot() {
     openPanel(shot, render);
     game.buy = (pid) => {
       const r = session.buy({ id: pid, price: priceOf(pid) });
-      if (r.ok) hud.toast(`Куплено: «${info(pid).title}». Остаток — ${francs(session.state.budget)}.`);
+      if (r.ok) hud.toast(`Куплено: «${info(pid).title}». Остаток — ${francs(session.state.budget)}`);
       if (game.screen === 'inspect') render();
       return r.ok;
     };
@@ -405,7 +406,10 @@ async function boot() {
   renderer.setAnimationLoop(() => {
     timer.update();
     const dt = Math.min(timer.getDelta(), 0.1);
-    if (loading || !level || !body || !post || !avatar) return;
+    if (loading || !level || !body || !post || !avatar) {
+      endFrame(input);
+      return;
+    }
 
     if (input.pressed.has('pause')) {
       if (game.screen === 'play') pause();
@@ -443,7 +447,7 @@ async function boot() {
     if (nearby && input.pressed.has('interact')) nearby.action();
 
     rig.update(dt, body.position, body.collider);
-    avatar.update(dt, body, rig.bodyVisibility);
+    avatar.update(dt, body, rig.inShot ? 0 : rig.bodyVisibility);
     hud.setCrosshair(playing && rig.mode === 'first');
     level.update?.(dt, timer.getElapsed());
     post.render();

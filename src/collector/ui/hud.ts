@@ -54,6 +54,11 @@ export class Hud {
     if (html !== null && this.el.budget.innerHTML !== html) this.el.budget.innerHTML = html;
   }
 
+  clearToast() {
+    clearTimeout(this.toastTimer);
+    this.el.toast.classList.remove('c-toast--show');
+  }
+
   setStats(text: string | null) {
     this.el.stats.hidden = text === null;
     if (text !== null) this.el.stats.textContent = text;

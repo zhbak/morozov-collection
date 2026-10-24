@@ -222,12 +222,12 @@ export async function buildMansion(ctx: LevelContext): Promise<Level> {
       get label() {
         return session.state.hung[s.id] ? 'E — перевесить картину' : 'E — повесить картину сюда';
       },
-      action: () =>
-        actions.chooseHanging(s.id, {
-          position: s.pos.clone().addScaledVector(n, 3.4).add(new THREE.Vector3(0, -0.05, 0)),
-          target: s.pos.clone(),
-          fov: 45,
-        }),
+      action: () => {
+        // Справа на экране — панель выбора: смещаем кадр, место на стене остаётся слева
+        const right = new THREE.Vector3(n.z, 0, -n.x);
+        const target = s.pos.clone().addScaledVector(right, 0.75);
+        actions.chooseHanging(s.id, { position: target.clone().addScaledVector(n, 3.2), target, fov: 45 });
+      },
     };
   });
 
