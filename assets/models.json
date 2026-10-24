@@ -4,5 +4,104 @@
     "prompt": "Art Nouveau (Russian modern style, circa 1905) wooden armchair with curved carved walnut frame and dark green velvet upholstery, game-ready prop, clean topology",
     "art_style": "realistic",
     "target_polycount": 8000
+  },
+  {
+    "id": "fiacre",
+    "prompt": "Parisian horse-drawn fiacre cab around 1905: one chestnut horse in black leather harness pulling a black lacquered closed four-wheel carriage with large thin spoked wheels, folding hood, raised coachman box seat, small brass carriage lamps. Realistic proportions, period-accurate, game-ready prop, clean topology",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "morris_column",
+    "prompt": "Paris Morris advertising column around 1900: tall dark green cast-iron cylinder with ornate fluted onion-shaped dome roof topped by a finial and a decorative cast frieze under the dome, the cylinder covered with faded plain cream and ochre paper posters without any readable text. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "bistro_set",
+    "prompt": "Parisian cafe terrace set around 1900: small round white marble bistro table on a black cast-iron tripod base with two curved bentwood Thonet chairs with cane seats, arranged together. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "easel",
+    "prompt": "Antique wooden painter's studio easel around 1900, dark oiled oak, tall A-frame with central mast, adjustable canvas ledge and crank, empty without a canvas. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "dealer_desk",
+    "prompt": "Louis XV style mahogany writing desk (bureau plat) around 1900 with gilded bronze mounts, curved cabriole legs, green leather writing top, an inkwell and a few closed ledgers on top. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "flower_cart",
+    "prompt": "Paris flower seller's wooden two-wheel handcart around 1900 with zinc buckets full of red roses, white lilies and violets. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "bench",
+    "prompt": "Paris public bench around 1900, Davioud style: dark green ornate cast-iron legs and armrests with wooden slatted seat and backrest. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "crates",
+    "prompt": "Two wooden shipping crates for paintings around 1908, rough pine boards with rope handles, one closed and one open with straw packing, flat rectangular crates leaning together. Realistic, game-ready prop",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "passerby_woman",
+    "prompt": "Elegant Parisian woman around 1908 standing still, long cream walking dress with high lace collar and leg-of-mutton sleeves, large wide-brimmed hat with feathers, holding a closed parasol. Stylized semi-realistic with soft painterly textures, full body, game-ready",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "passerby_man",
+    "prompt": "Parisian gentleman around 1908 standing and reading an open newspaper, dark grey overcoat, black bowler hat, dark trousers, walking cane hooked on his arm. Stylized semi-realistic with soft painterly textures, full body, game-ready",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
+  },
+  {
+    "id": "porter",
+    "prompt": "Paris delivery porter around 1908 standing, blue work smock, flat cap, carrying a large flat parcel wrapped in brown paper under his arm. Stylized semi-realistic with soft painterly textures, full body, game-ready",
+    "target": "collector",
+    "target_polycount": 30000,
+    "simplify": false,
+    "max_texture": 2048,
+    "max_mb": 8
   }
 ]

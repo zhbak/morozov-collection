@@ -37,6 +37,8 @@ export interface PostOptions {
     color: THREE.ColorRepresentation;
     density?: number;
     maxDensity?: number;
+    /** Затухание по дальности — гасит накопление в открытом небе */
+    attenuation?: number;
   };
   vignette?: number;
   ao?: { radius?: number; intensity?: number };
@@ -46,6 +48,8 @@ export class PostFX {
   readonly pipeline: THREE.RenderPipeline;
   /** Сила виньетки — меняется на лету (затемнения, крупные планы) */
   readonly vignette = uniform(0.35);
+  /** Узлы эффектов — для подстройки из отладки (?debug → __dbg.post) */
+  readonly nodes: Record<string, unknown> = {};
   private disposables: { dispose(): void }[] = [];
 
   constructor(renderer: THREE.WebGPURenderer, scene: THREE.Scene, camera: THREE.Camera, q: Quality, opts: PostOptions = {}) {
@@ -70,7 +74,7 @@ export class PostFX {
       if (opts.ao?.radius) aoPass.radius.value = opts.ao.radius;
       const scenePass = pass(scene, camera, q.traa ? {} : { samples: 4 });
       scenePass.contextNode = builtinAOContext(aoPass.getTextureNode().sample(screenUV).r);
-      color = scenePass as unknown as THREE.Node<'vec4'>;
+      color = scenePass.getTextureNode('output') as unknown as THREE.Node<'vec4'>;
       this.disposables.push(pre, aoPass, scenePass);
     } else if (q.ao === 'ssgi') {
       const scenePass = pass(scene, camera);
@@ -94,7 +98,7 @@ export class PostFX {
     } else {
       const scenePass = pass(scene, camera, q.traa ? {} : { samples: 4 });
       if (q.traa) scenePass.setMRT(mrt({ output, velocity }));
-      color = (q.traa ? scenePass.getTextureNode('output') : scenePass) as unknown as THREE.Node<'vec4'>;
+      color = scenePass.getTextureNode('output') as unknown as THREE.Node<'vec4'>;
       depth = scenePass.getTextureNode('depth');
       if (q.traa) vel = scenePass.getTextureNode('velocity');
       this.disposables.push(scenePass);
@@ -102,8 +106,10 @@ export class PostFX {
 
     if (q.godrays && opts.godrays) {
       const g = godrays(depth, camera, opts.godrays.light);
-      g.density.value = opts.godrays.density ?? 0.006;
+      this.nodes.godrays = g;
+      g.density.value = opts.godrays.density ?? 0.7;
       g.maxDensity.value = opts.godrays.maxDensity ?? 0.6;
+      g.distanceAttenuation.value = opts.godrays.attenuation ?? 2;
       const blur = bilateralBlur(g.getTextureNode());
       color = depthAwareBlend(color, blur.getTextureNode(), depth, camera, {
         blendColor: uniform(new THREE.Color(opts.godrays.color)),

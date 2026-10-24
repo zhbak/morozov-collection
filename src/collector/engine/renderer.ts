@@ -1,6 +1,7 @@
 import * as THREE from 'three/webgpu';
 import { SunLight } from 'three/addons/lights/SunLight.js';
 import { SunLightNode } from 'three/addons/lights/SunLightNode.js';
+import { RectAreaLightTexturesLib } from 'three/addons/lights/RectAreaLightTexturesLib.js';
 import type { Quality } from './quality';
 
 export async function createRenderer(canvas: HTMLCanvasElement, q: Quality, forceWebGL: boolean) {
@@ -12,6 +13,8 @@ export async function createRenderer(canvas: HTMLCanvasElement, q: Quality, forc
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   renderer.library.addLight(SunLightNode, SunLight);
+  // Прямоугольные источники (световой фонарь в потолке) требуют LTC-таблиц
+  THREE.RectAreaLightNode.setLTC(RectAreaLightTexturesLib.init());
   await renderer.init();
   return renderer;
 }

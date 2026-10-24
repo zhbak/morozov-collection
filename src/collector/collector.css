@@ -244,3 +244,153 @@ kbd {
   opacity: 1;
   transform: none;
 }
+
+/* Справка о картине и развеска — панель справа, картина остаётся в кадре слева */
+.c-layer:has(.c-side) {
+  place-items: center end;
+  padding-right: max(32px, 4vw);
+}
+
+.c-side {
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+  padding: 30px 32px 26px;
+}
+
+.c-side h2 {
+  font-size: 34px;
+}
+
+.c-side p {
+  margin: 0 0 12px;
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.c-meta {
+  color: var(--ink-dim);
+  font-size: 14px !important;
+}
+
+.c-prov b {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.c-now {
+  color: var(--ink-dim);
+}
+
+.c-side .c-row {
+  margin-bottom: 14px;
+}
+
+.c-text {
+  margin-top: 6px !important;
+}
+
+.c-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 12px 0 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.c-price span {
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+.c-price b {
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--gold);
+}
+
+.c-note a {
+  color: var(--ink-dim);
+}
+
+.c-picks {
+  display: grid;
+  gap: 8px;
+  margin: 6px 0 20px;
+}
+
+.c-pick {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.c-pick:hover,
+.c-pick--on {
+  border-color: var(--gold);
+  background: rgba(217, 178, 111, 0.12);
+}
+
+.c-pick img {
+  width: 76px;
+  height: 58px;
+  object-fit: cover;
+  flex: none;
+}
+
+.c-pick b {
+  display: block;
+  font-size: 15px;
+}
+
+.c-pick small {
+  color: var(--ink-dim);
+  font-size: 13px;
+}
+
+.c-chapter {
+  max-width: min(680px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+}
+
+.c-chapter p {
+  margin: 0 0 14px;
+}
+
+.c-chapter details {
+  margin: 8px 0 4px;
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+.c-chapter a {
+  color: var(--ink-dim);
+}
+
+.c-budget {
+  position: absolute;
+  left: 18px;
+  top: 14px;
+  padding: 8px 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+
+.c-budget b {
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--gold);
+  margin-left: 6px;
+}

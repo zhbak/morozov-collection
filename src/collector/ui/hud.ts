@@ -10,6 +10,7 @@ export class Hud {
       <div class="c-prompt" data-k="prompt" hidden></div>
       <div class="c-toast" data-k="toast" role="status" aria-live="polite"></div>
       <div class="c-stats" data-k="stats" hidden></div>
+      <div class="c-budget" data-k="budget" hidden></div>
       <div class="c-crosshair" data-k="crosshair" hidden></div>
       <div class="c-layer" data-k="layer"></div>`;
     for (const n of root.querySelectorAll<HTMLElement>('[data-k]')) this.el[n.dataset.k!] = n;
@@ -45,6 +46,12 @@ export class Hud {
     t.classList.add('c-toast--show');
     clearTimeout(this.toastTimer);
     this.toastTimer = window.setTimeout(() => t.classList.remove('c-toast--show'), ms);
+  }
+
+  /** Плашка бюджета; null — скрыть */
+  setBudget(html: string | null) {
+    this.el.budget.hidden = html === null;
+    if (html !== null && this.el.budget.innerHTML !== html) this.el.budget.innerHTML = html;
   }
 
   setStats(text: string | null) {

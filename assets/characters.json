@@ -1,0 +1,38 @@
+[
+  {
+    "id": "morozov",
+    "note": "Стилизация по мотивам портрета И. А. Морозова работы В. Серова (1910), без попытки точного лица. prompt — первая попытка Text-to-3D (худой, отклонена); модель строится по images",
+    "concept": {
+      "tool": "Meshy Text-to-Image, nano-banana-pro, generate_multi_view, pose_mode a-pose (9 кредитов, через MCP 24.10.2026)",
+      "prompt": "Full-body game character reference, plain light grey background, orthographic. A portly, heavy-set Moscow gentleman art collector around 1908, about 37 years old: wide stout body with a large round belly, thick neck, broad round full face, short dark brown hair neatly parted, thick brown moustache and short pointed chin beard. He wears a dark brown wool three-piece suit: single-breasted jacket of normal hip length (not a long coat), matching waistcoat with a thin gold watch chain, white shirt with a high stiff collar, dark green-black silk necktie, dark trousers, polished black leather shoes. Stylized semi-realistic look with soft painterly brush texture, like an early 20th-century Russian portrait painting, not photorealistic. Calm dignified expression. Standing straight in A-pose, arms about 30 degrees away from the body, palms facing the thighs, fingers relaxed."
+    },
+    "images": [
+      "assets/raw/morozov/concept-0.png",
+      "assets/raw/morozov/concept-1.png",
+      "assets/raw/morozov/concept-2.png"
+    ],
+    "prompt": "Full-body 3D game character, stylized semi-realistic, standing in A-pose. A portly, heavy-set Moscow gentleman art collector around 1908, about 37 years old: broad shoulders, round full face, short dark brown hair neatly parted, thick brown moustache and short pointed chin beard. He wears a dark brown wool three-piece suit with a long single-breasted jacket, matching waistcoat with a thin gold watch chain, white shirt with a high stiff collar and white cuffs, dark green-black silk necktie, dark trousers and polished black leather shoes. Calm dignified expression. Painterly, softly hand-painted look, not photorealistic. Clean silhouette, arms held away from the body, fingers separated, symmetrical, game-ready.",
+    "texture_prompt": "Dark brown wool suit fabric with subtle weave, crisp white shirt collar and cuffs, dark green silk tie, thin gold watch chain, warm painterly skin tones, brown hair and moustache, polished black leather shoes",
+    "ai_model": "meshy-7.1",
+    "pose_mode": "a-pose",
+    "target_polycount": 30000,
+    "texture_resolution": "4k",
+    "height_meters": 1.8,
+    "actions": [
+      0,
+      338,
+      613,
+      14,
+      42,
+      48
+    ],
+    "action_names": [
+      "Idle",
+      "Short Breathe and Look Around",
+      "Casual Walk (in place)",
+      "Run 2",
+      "Gentlemans Bow",
+      "Mirror Viewing"
+    ]
+  }
+]

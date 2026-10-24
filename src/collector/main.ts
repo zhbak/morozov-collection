@@ -8,9 +8,18 @@ import { CameraRig } from './engine/cameraRig';
 import { createInputState, endFrame, KeyboardMouseInput, type Action } from './engine/input';
 import { PostFX } from './engine/post';
 import { capsuleAvatar, type Avatar } from './engine/avatar';
+import { loadAnimatedAvatar } from './engine/animatedAvatar';
 import { Hud } from './ui/hud';
+import { chapterScreen, francs, hangScreen, inspectScreen } from './ui/screens';
 import type { Interactable, Level, LevelContext, LocationId } from './scenes/level';
 import { buildTestbed } from './scenes/testbed';
+import { buildStreet } from './scenes/street';
+import { buildGallery } from './scenes/gallery';
+import { buildMansion } from './scenes/mansion';
+import { Session } from './game/session';
+import { allHung } from './game/collection';
+import { BARGAIN, BUDGET, CHAPTER, INTRO, PAINTINGS } from './content/paintings';
+import type { Shot } from './engine/cameraRig';
 
 const params = new URLSearchParams(location.search);
 const quality = pickQuality(params.get('q'), { mobile: matchMedia('(pointer: coarse)').matches });
@@ -21,6 +30,9 @@ type Screen = 'loading' | 'title' | 'play' | 'pause' | 'inspect' | 'transition' 
 
 const LEVELS: Partial<Record<LocationId, (ctx: LevelContext) => Promise<Level>>> = {
   testbed: buildTestbed,
+  street: buildStreet,
+  gallery: buildGallery,
+  mansion: buildMansion,
 };
 
 // Отладочные «ручки» для Playwright и агента: состояние и действия через тот же InputState
@@ -41,7 +53,16 @@ const game = {
   walk: (_x: number, _y: number, _seconds: number, _run = false) => Promise.resolve(),
   look: (_dx: number, _dy: number) => {},
   teleport: (_x: number, _z: number, _facing?: number) => {},
-  goto: (_id: LocationId) => Promise.resolve(),
+  goto: (_id: LocationId, _caption?: string) => Promise.resolve(),
+  /** Покупки и развеска — без кликов по кнопкам */
+  budget: 0,
+  owned: [] as string[],
+  hung: {} as Record<string, string>,
+  buy: (_id: string) => false,
+  bargain: (_id: string) => false,
+  hang: (_slot: string, _id: string) => {},
+  /** Закрыть открытый экран (справка, развеска) */
+  close: () => {},
 };
 (window as unknown as { __game: typeof game }).__game = game;
 
@@ -71,9 +92,33 @@ async function boot() {
   let level: Level | null = null;
   let post: PostFX | null = null;
   let body: CharacterBody | null = null;
+  // Персонаж общий для всех локаций; капсула — если модели нет
+  const avatarReady = loadAnimatedAvatar(`${ASSETS}models/morozov.glb`, `${ASSETS}models/morozov-anims.glb`, 1.8).catch((e) => {
+    console.warn('Модель персонажа не загрузилась, остаётся капсула:', e?.message ?? e);
+    return null;
+  });
   let avatar: Avatar | null = null;
   let rig = new CameraRig(camera, physics);
   let nearby: Interactable | null = null;
+
+  // Прохождение: бюджет, покупки, торг, развеска
+  const session = new Session(BUDGET);
+  const bargained = new Set<string>();
+  const info = (id: string) => PAINTINGS.find((p) => p.id === id)!;
+  const priceOf = (id: string) => (bargained.has(id) ? BARGAIN[id] : info(id).price);
+  const syncState = () => {
+    game.budget = session.state.budget;
+    game.owned = [...session.state.owned];
+    game.hung = { ...session.state.hung };
+    if (game.location === 'mansion') {
+      const n = Object.keys(session.state.hung).length;
+      hud.setBudget(`Развешано <b>${n} из ${session.state.owned.length}</b>`);
+    } else if (game.location === 'gallery' || session.state.owned.length) {
+      hud.setBudget(`Бюджет <b>${francs(session.state.budget)}</b>`);
+    } else hud.setBudget(null);
+  };
+  session.onChange(syncState);
+  let closeScreen: (() => void) | null = null;
 
   const resize = () => {
     renderer.setSize(innerWidth, innerHeight, false);
@@ -83,26 +128,42 @@ async function boot() {
   addEventListener('resize', resize);
   resize();
 
+  // Пока локация пересобирается, цикл не трогает физику и сцену: старые объекты уже освобождены
+  let loading = false;
   async function load(id: LocationId) {
     const build = LEVELS[id];
     if (!build) throw new Error(`Локация «${id}» ещё не собрана`);
+    loading = true;
     post?.dispose();
+    if (avatar) level?.scene.remove(avatar.object);
     level?.dispose();
     body?.dispose();
-    avatar?.dispose();
     physics.dispose();
 
     physics = new Physics();
     const view = rig.mode;
     rig = new CameraRig(camera, physics);
     rig.mode = view;
-    level = await build({ renderer, physics, quality, assets: ASSETS });
+    level = await build({
+      renderer,
+      physics,
+      quality,
+      assets: ASSETS,
+      actions: {
+        goto: (to) => void game.goto(to),
+        toast: (text) => hud.toast(text),
+        inspect: (id, shot) => openInspect(id, shot),
+        travel: () => void game.goto('mansion', INTRO.travel),
+        chooseHanging: (slot, shot) => openHanging(slot, shot),
+      },
+      session,
+    });
     body = new CharacterBody(physics, level.spawn.position);
     body.teleport(level.spawn.position, level.spawn.facing);
     // Коллайдеры попадают в запросы Rapier только после шага — иначе первый кадр проваливается
     physics.step(1 / 60);
     rig.snapBehind(level.spawn.facing);
-    avatar = capsuleAvatar(body);
+    avatar = (await avatarReady) ?? avatar ?? capsuleAvatar(body);
     level.scene.add(avatar.object);
     renderer.toneMapping = level.toneMapping ?? THREE.AgXToneMapping;
     renderer.toneMappingExposure = level.exposure ?? 1;
@@ -110,6 +171,99 @@ async function boot() {
     // Компиляция шейдеров до первого кадра — без рывка после затемнения
     await renderer.compileAsync(level.scene, camera);
     game.location = id;
+    loading = false;
+    syncState();
+  }
+
+  /** Экран поверх замершей сцены: камера на крупном плане, курсор свободен */
+  function openPanel(shot: Shot, render: () => void, onClose?: () => void) {
+    game.screen = 'inspect';
+    kbm.enabled = false;
+    kbm.reset();
+    kbm.releaseLock();
+    hud.setPrompt(null);
+    rig.setShot(shot);
+    render();
+    closeScreen = () => {
+      closeScreen = null;
+      rig.setShot(null);
+      play();
+      onClose?.();
+    };
+  }
+
+  function openInspect(id: string, shot: Shot) {
+    const p = info(id);
+    const render = () => {
+      const el = inspectScreen(hud, { ...p, price: priceOf(id) }, session.state, {
+        buy: () => game.buy(id),
+        close: () => closeScreen?.(),
+      });
+      // Торг — только там, где он задокументирован
+      if (BARGAIN[id] && !bargained.has(id) && !session.state.owned.includes(id)) {
+        const b = document.createElement('button');
+        b.className = 'c-btn c-btn--ghost';
+        b.textContent = 'Торговаться';
+        b.addEventListener('click', () => game.bargain(id));
+        el.querySelector('.c-row')!.append(b);
+      }
+      if (bargained.has(id) && !session.state.owned.includes(id)) {
+        const n = document.createElement('p');
+        n.className = 'c-note';
+        n.textContent = `Дрюэ уступил: ${francs(priceOf(id))} вместо ${francs(p.price)} Морозов действительно сбавил цену «Виноградников» примерно на треть.`;
+        el.querySelector('.c-row')!.after(n);
+      }
+    };
+    openPanel(shot, render);
+    game.buy = (pid) => {
+      const r = session.buy({ id: pid, price: priceOf(pid) });
+      if (r.ok) hud.toast(`Куплено: «${info(pid).title}». Остаток — ${francs(session.state.budget)}.`);
+      if (game.screen === 'inspect') render();
+      return r.ok;
+    };
+    game.bargain = (pid) => {
+      if (!BARGAIN[pid] || bargained.has(pid) || session.state.owned.includes(pid)) return false;
+      bargained.add(pid);
+      if (game.screen === 'inspect') render();
+      return true;
+    };
+  }
+
+  function openHanging(slot: string, shot: Shot) {
+    const render = () =>
+      hangScreen(hud, PAINTINGS, session.state, slot, ASSETS, {
+        pick: (id) => {
+          game.hang(slot, id);
+          closeScreen?.();
+        },
+        close: () => closeScreen?.(),
+      });
+    openPanel(shot, render, () => {
+      if (allHung(session.state)) setTimeout(showChapter, 900);
+    });
+  }
+
+  function showChapter() {
+    if (game.screen !== 'play') return;
+    game.screen = 'chapter';
+    kbm.enabled = false;
+    kbm.reset();
+    kbm.releaseLock();
+    hud.setPrompt(null);
+    chapterScreen(
+      hud,
+      CHAPTER,
+      session.state.owned.map(info),
+      {
+        restart: () => {
+          session.reset();
+          bargained.clear();
+          hud.clearScreen();
+          void game.goto('street', INTRO.street).then(play);
+        },
+        free: play,
+      },
+    );
   }
 
   // Скриптовый ввод перекрывает клавиатуру, пока действует
@@ -126,17 +280,43 @@ async function boot() {
       script = { x, y, run, left: seconds, done };
     });
   game.teleport = (x, z, facing) => body?.teleport(new THREE.Vector3(x, body.position.y, z), facing);
-  game.goto = async (id) => {
+  game.buy = (id) => session.buy({ id, price: priceOf(id) }).ok;
+  game.bargain = (id) => (BARGAIN[id] && !bargained.has(id) ? (bargained.add(id), true) : false);
+  game.hang = (slot, id) => {
+    session.hang(slot, id);
+    if (allHung(session.state) && game.screen === 'play') setTimeout(showChapter, 900);
+  };
+  game.close = () => closeScreen?.();
+  game.goto = async (id, caption = '') => {
     const prev = game.screen;
     game.screen = 'transition';
-    await hud.fade(true);
-    await load(id);
-    await hud.fade(false);
-    game.screen = prev === 'transition' ? 'play' : prev;
+    kbm.reset();
+    await hud.fade(true, caption, caption ? 1400 : 700);
+    if (caption) await new Promise((r) => setTimeout(r, 1300));
+    try {
+      await load(id);
+    } catch (e) {
+      console.error(e);
+      game.screen = 'error';
+      game.error = String((e as Error)?.message ?? e);
+      hud.showScreen(`<h2>Не удалось открыть локацию</h2><p class="c-lead">${game.error}</p>`, 'c-error');
+      return;
+    }
+    await hud.fade(false, '', 900);
+    game.screen = prev === 'transition' || prev === 'inspect' || prev === 'chapter' ? 'play' : prev;
+    if (id === 'gallery') {
+      hud.toast(INTRO.gallery, 5000);
+      setTimeout(() => game.location === 'gallery' && hud.toast(INTRO.serov, 6500), 5600);
+    }
+    if (id === 'mansion') hud.toast(INTRO.mansion, 5000);
   };
 
-  const startId = (params.get('loc') as LocationId) || 'testbed';
+  const startId = (params.get('loc') as LocationId) || 'street';
   await load(startId);
+  if (DEBUG)
+    Object.assign(window, {
+      __dbg: { THREE, renderer, camera, get level() { return level; }, get post() { return post; }, get rig() { return rig; } },
+    });
 
   const timer = new THREE.Timer();
   timer.connect(document);
@@ -184,7 +364,7 @@ async function boot() {
   const title = hud.showScreen(
     `<p class="c-eyebrow">Собрание Ивана Морозова</p>
      <h1>Коллекционер</h1>
-     <p class="c-lead">Прототип: управление и камера на тестовой площадке.</p>
+     <p class="c-lead">Париж, начало XX века. Пройдите по улице торговцев картинами, выберите покупки в галерее и развесьте их в особняке на Пречистенке.</p>
      ${controlsHtml()}
      <button class="c-btn" data-a="start">Начать</button>`,
     'c-title',
@@ -198,12 +378,13 @@ async function boot() {
   renderer.setAnimationLoop(() => {
     timer.update();
     const dt = Math.min(timer.getDelta(), 0.1);
-    if (!level || !body || !post || !avatar) return;
+    if (loading || !level || !body || !post || !avatar) return;
 
     if (input.pressed.has('pause')) {
       if (game.screen === 'play') pause();
       else if (game.screen === 'pause') play();
-    }
+      else if (game.screen === 'inspect') closeScreen?.();
+    } else if (game.screen === 'inspect' && input.pressed.has('interact')) closeScreen?.();
     const playing = game.screen === 'play';
     if (playing && input.pressed.has('toggleView')) rig.toggle();
     if (playing) rig.rotate(input.look.x, input.look.y);
@@ -261,12 +442,14 @@ function findNearby(list: Interactable[], pos: THREE.Vector3, forward: THREE.Vec
   let bestScore = Infinity;
   for (const it of list) {
     if (it.enabled && !it.enabled()) continue;
-    const dx = it.position.x - pos.x;
-    const dz = it.position.z - pos.z;
-    const d = Math.hypot(dx, dz);
+    const d = Math.hypot(it.position.x - pos.x, it.position.z - pos.z);
     if (d > it.radius) continue;
-    // Предпочитаем то, что перед камерой
-    const facing = d > 0.01 ? (dx * forward.x + dz * forward.z) / d : 1;
+    // Предпочитаем то, на что смотрит камера
+    const t = it.target ?? it.position;
+    const tx = t.x - pos.x;
+    const tz = t.z - pos.z;
+    const td = Math.hypot(tx, tz);
+    const facing = td > 0.01 ? (tx * forward.x + tz * forward.z) / td : 1;
     if (facing < -0.2) continue;
     const score = d * (1.5 - facing);
     if (score < bestScore) {

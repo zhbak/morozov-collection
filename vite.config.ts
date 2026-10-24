@@ -2,19 +2,11 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // BASE задаётся в CI для GitHub Pages: /morozov-collection/
-// Две точки входа: index.html — v1 (эпизоды по QR), collector.html — v2 «Коллекционер» (десктоп)
+// Сборка v1 (index.html, эпизоды по QR). v2 «Коллекционер» собирается отдельно — vite.collector.config.ts —
+// чтобы у v1 не появилось общих чанков с тяжёлой десктопной версией. В dev-сервере доступны обе страницы.
 export default defineConfig({
   base: process.env.BASE ?? '/',
-  build: {
-    target: 'es2022',
-    chunkSizeWarningLimit: 800,
-    rolldownOptions: {
-      input: {
-        main: new URL('./index.html', import.meta.url).pathname,
-        collector: new URL('./collector.html', import.meta.url).pathname,
-      },
-    },
-  },
+  build: { target: 'es2022', chunkSizeWarningLimit: 800 },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -22,7 +14,8 @@ export default defineConfig({
       workbox: {
         // Все эпизоды кэшируются при первом скане QR — в зале может не быть сети
         globPatterns: ['**/*.{js,css,html,webp,glb,png,svg}'],
-        // v2 тяжёлая и десктопная: посетитель зала не должен скачивать её вместе с v1
+        // v2 тяжёлая и десктопная (собирается отдельно, но её public/collector копируется сюда):
+        // посетитель зала не должен скачивать её вместе с v1
         globIgnores: ['collector.html', 'collector/**', 'assets/collector-*'],
         navigateFallbackDenylist: [/collector/],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
@@ -40,20 +33,5 @@ export default defineConfig({
         ],
       },
     }),
-    {
-      // PWA — только для v1: v2 не ставит сервис-воркер и не скачивает офлайн-кэш зала.
-      // Стоит после VitePWA, чтобы срабатывать после его вставки в HTML
-      name: 'collector-without-pwa',
-      enforce: 'post',
-      transformIndexHtml: {
-        order: 'post',
-        handler: (html, ctx) =>
-          ctx.filename.endsWith('collector.html')
-            ? html
-                .replace(/<link rel="manifest"[^>]*>/, '')
-                .replace(/<script id="vite-plugin-pwa:register-sw"[^>]*><\/script>/, '')
-            : html,
-      },
-    },
   ],
 });

@@ -11,5 +11,5 @@ export default defineConfig({
     { name: 'desktop', use: { viewport: { width: 1280, height: 800 } } },
     { name: 'mobile', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },
   ],
-  webServer: { command: 'npx vite build && npx vite preview --port 4173', port: 4173, reuseExistingServer: true, timeout: 120_000 },
+  webServer: { command: 'npm run build && npx vite preview --port 4173', port: 4173, reuseExistingServer: true, timeout: 120_000 },
 });

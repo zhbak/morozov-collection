@@ -1,0 +1,82 @@
+{
+  "license": "CC0 1.0, https://polyhaven.com/license",
+  "textures": [
+    {
+      "id": "cobblestone_floor_02",
+      "res": "2k",
+      "use": "мостовая"
+    },
+    {
+      "id": "worn_asphalt",
+      "res": "2k",
+      "use": "тротуар"
+    },
+    {
+      "id": "marble_01",
+      "res": "2k",
+      "use": "тёсаный камень фасадов"
+    },
+    {
+      "id": "beige_wall_001",
+      "res": "2k",
+      "use": "гладкие поверхности фасада"
+    },
+    {
+      "id": "roof_slates_03",
+      "res": "2k",
+      "use": "мансарды"
+    },
+    {
+      "id": "black_painted_planks",
+      "res": "2k",
+      "use": "витрины лавок"
+    },
+    {
+      "id": "herringbone_parquet",
+      "res": "2k",
+      "use": "паркет особняка"
+    },
+    {
+      "id": "old_wooden_floor_01",
+      "res": "2k",
+      "use": "пол галереи"
+    },
+    {
+      "id": "velour_velvet",
+      "res": "2k",
+      "use": "обивка стен"
+    },
+    {
+      "id": "plastered_wall_02",
+      "res": "2k",
+      "use": "штукатурка интерьеров"
+    }
+  ],
+  "models": [
+    {
+      "id": "street_lamp_01",
+      "res": "2k",
+      "use": "уличный фонарь"
+    },
+    {
+      "id": "Chandelier_03",
+      "res": "2k",
+      "use": "люстра особняка"
+    },
+    {
+      "id": "ArmChair_01",
+      "res": "2k",
+      "use": "кресло галереи"
+    },
+    {
+      "id": "ClassicConsole_01",
+      "res": "2k",
+      "use": "консоль"
+    },
+    {
+      "id": "sofa_03",
+      "res": "2k",
+      "use": "диван особняка"
+    }
+  ]
+}

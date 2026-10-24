@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && vite build --config vite.collector.config.ts",
     "preview": "vite preview",
     "test": "vitest run src",
     "e2e": "playwright test",
@@ -13,7 +13,10 @@
     "assets:paintings": "node scripts/assets/paintings.mjs",
     "assets:gen": "node scripts/assets/meshy-gen.mjs",
     "assets:optimize": "node scripts/assets/optimize.mjs",
-    "check:size": "node scripts/check-size.mjs"
+    "check:size": "node scripts/check-size.mjs",
+    "assets:character": "node scripts/assets/meshy-character.mjs",
+    "assets:polyhaven": "node scripts/assets/polyhaven.mjs",
+    "assets:paintings-v2": "node scripts/assets/commons-paintings.mjs"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",

@@ -41,7 +41,8 @@ export class KeyboardMouseInput {
       if (e.repeat) return;
       this.keys.add(e.code);
       const action = KEY_ACTIONS[e.code];
-      if (action && (this.enabled || action === 'pause')) state.pressed.add(action);
+      // На экранах (пауза, справка) работают только Esc и E — закрыть
+      if (action && (this.enabled || action !== 'toggleView')) state.pressed.add(action);
       this.sync();
     });
     this.on(window, 'keyup', (e: KeyboardEvent) => {

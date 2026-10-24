@@ -28,3 +28,50 @@
 | 1948 — ГМНЗИ ликвидирован, коллекция разделена между ГМИИ и Эрмитажем | ✅ | ru.wiki, Сноб |
 
 **Перед показом музею:** сверить ⚠️ и ☑️ с каталогом ГМИИ или с куратором.
+
+---
+
+# v2 «Коллекционер»
+
+Проверено 24.10.2026 (исследование: выдержки из книги Н. Семёновой в The Art Newspaper Russia, каталоги-резоне, Wikipedia,
+annaboch.com). Сайты ГМИИ и Эрмитажа из среды проверки не открывались — размеры и инвентарные номера взяты из выдачи
+поиска по домену pushkinmuseum.art и страниц Commons, ссылающихся на карточки музея.
+
+## Картины в галерее
+
+| Факт | Статус | Источник |
+|---|---|---|
+| «Красные виноградники»: Морозов купил в 1909 г. у Эжена Дрюэ (галерея на rue Royale, 20) | ✅ | [annaboch.com](https://annaboch.com/theredvineyard/) (письмо Музея Ван Гога, 2018), [vggallery](https://vggallery.com/painting/p_0495.htm), [TANR](https://www.theartnewspaper.ru/posts/20220627-iiwq/) |
+| Размер «Красных виноградников» 73 × 91 см (ГМИИ, Ж-3372) | ☑️ | Commons ([файл](https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Red_Vineyard_at_Arles_(1888).jpg)) по карточке ГМИИ; en.wiki даёт 75 × 93 |
+| Дрюэ просил 30 000 фр. за «Виноградники» и по 25 000 за каждое из остальных четырёх полотен Ван Гога | ☑️ | [TANR](https://www.theartnewspaper.ru/posts/20220627-iiwq/) (письмо Дрюэ в изложении Н. Семёновой); 30 000 — также [The Art Newspaper, 2025](https://www.theartnewspaper.com/2025/08/15/how-did-the-only-painting-sold-by-van-gogh-in-his-lifetime-end-up-in-russia) |
+| Морозов сбавил цену «Виноградников» примерно на треть (20 000 фр. в игре — арифметика, суммы в источнике нет) | ☑️ | [TANR](https://www.theartnewspaper.ru/posts/20220627-iiwq/) |
+| Серов, позванный арбитром, советовал из пяти взять «Красные виноградники» и «Прогулку заключённых» | ☑️ | [TANR](https://www.theartnewspaper.ru/posts/20220627-iiwq/) (со слов Б. Терновца), [Arzamas](https://arzamas.academy/materials/1439) |
+| «Пейзаж в Овере после дождя» Морозов купил у Дрюэ осенью 1909 г. на сэкономленные при торге деньги | ☑️ | [TANR](https://www.theartnewspaper.ru/posts/20220627-iiwq/) |
+| «Пейзаж в Овере после дождя»: июнь 1890 г., 72 × 90 см, ГМИИ (Ж-3374) | ☑️ | выдача по pushkinmuseum.art; [Commons](https://commons.wikimedia.org/wiki/File:Vincent_van_Gogh_-_Landscape_with_a_Carriage_and_a_Train_(1890).jpg) |
+| Анна Бош купила «Виноградники» в 1890 г.; «единственная проданная при жизни» оспаривается — в игре «одна из немногих продаж» | ✅ | [en.wiki](https://en.wikipedia.org/wiki/The_Red_Vineyard), [vggallery](https://vggallery.com/painting/p_0495.htm) (Koldehoff, 2003) |
+| «Прогулка заключённых»: февраль 1890 г., по гравюре Гюстава Доре; 80 × 64 см, ГМИИ (Ж-3373) | ✅ | [en.wiki](https://en.wikipedia.org/wiki/Prisoners%27_Round_(after_Gustave_Dor%C3%A9)), [vggallery](https://vggallery.com/painting/p_0669.htm) |
+| «Прогулка заключённых»: через Дрюэ к Морозову в 1909 г. | ✅ | en.wiki, vggallery, TANR |
+| «Бульвар Капуцинок»: Фор → Дюран-Рюэль (1906) → Морозов (1907); ГМИИ, 61 × 80 см | ✅ | [Isaacson, 2021](https://19thc-artworldwide.org/spring21/isaacson-on-monet-le-boulevard-des-capucines-en-carnival), [Семёнова, хронология](https://web.archive.org/web/20140322104209/http://www.tphv-history.ru/books/moskovskie-kollektsyonery40.html), [en.wiki](https://en.wikipedia.org/wiki/Boulevard_des_Capucines_(Monet)) |
+| Датировка «Бульвара»: 1873 (ГМИИ) или 1874 (Isaacson) — в игре «1873–1874» | ⚠️ → диапазон | en.wiki, Isaacson |
+| «Бульвар» считается версией с первой выставки импрессионистов 1874 г. | ☑️ | en.wiki («is believed to be») |
+| Цена «Бульвара» не найдена (50 000 фр. у Семёновой — за другую пару картин) — в игре условная | — | [en.wiki Haystack Near Giverny](https://en.wikipedia.org/wiki/Haystack_Near_Giverny) (каталог 2019) |
+| Сезанн, «Гора Сент-Виктуар, вид с дороги на Валькрос», 1878–1879, 58 × 72 см: Воллар → Морозов 5 октября 1907 г. | ☑️ | [Cézanne Catalogue Raisonné, FWN 127](https://www.cezannecatalogue.com/catalogue/entry.php?id=393) |
+| Сезанн много раз возвращался к мотиву горы Сент-Виктуар | ✅ | [en.wiki](https://en.wikipedia.org/wiki/Mont_Sainte-Victoire_(C%C3%A9zanne)), [ru.wiki](https://ru.wikipedia.org/wiki/Гора_Сент-Виктуар_(серия_картин)) |
+| Цена Сезанна Морозову не найдена — в игре условная | — | — |
+
+## Глава и подписи
+
+| Факт | Статус | Источник |
+|---|---|---|
+| За 1907–1908 гг. — более шестидесяти картин; к 1914 г. — 278 картин и 23 скульптуры | ✅ | [rusavangard.ru](https://rusavangard.ru/online/history/kollektsiya-ivana-morozova/), Семёнова (хронология) |
+| Кекушев при перестройке (1904–1906) встроил в крышу стеклянный фонарь, верхний этаж отдал под галерею, отделку сделал нейтральной | ✅ | [Зотова, «Москва купеческая»](https://thecity.m24.ru/articles/11385), Семёнова (хронология) |
+| Пустое место среди Сезаннов: Морозов ждал «голубого Сезанна» | ✅ | [Arzamas](https://arzamas.academy/materials/1439), [Apollo, 2021](https://apollo-magazine.com/morozov-collection-fondation-louis-vuitton/) |
+| Щукин и Морозов не перехватывали картины друг у друга (слова Н. Семёновой) | ☑️ | [TANR](https://www.theartnewspaper.ru/posts/20220627-iiwq/) |
+| Морозов торговался (миф о «русском, который не торгуется» документами не подтверждается) | ✅ | TANR, [ГМИИ «Брат Иван»](https://morozov.pushkinmuseum.art/) |
+| Национализация 1918, объединение со щукинским собранием 1923, раздел между ГМИИ и Эрмитажем 1948 | ✅ | см. раздел «Иван Абрамович Морозов и судьба собрания» выше |
+| Подписи-переходы без года: дата ввоза покупок 1909 г. в Москву не документирована | — | — |
+
+**Не используется в v2:** цитата Воллара «русский, который не торгуется» (⚠️ первоисточник не найден), цена «Бульвара Капуцинок»,
+«Москва, 1909» для покупок 1907 г., Фенеон как советчик (не подтверждено).
+
+Улица, галерея и зал особняка в v2 — стилизация, а не реконструкция; вывески на улице — общие французские слова без имён торговцев.
